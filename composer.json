@@ -1,0 +1,11 @@
+{
+  "autoload": {
+      "psr-4": {
+          "App\\": "App/",
+          "Config\\": "config/",
+          "Public\\": "public/",
+          "Routes\\": "routes/",
+          "Vendor\\": "vendor"
+      }
+  }
+}
