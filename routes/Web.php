@@ -12,10 +12,14 @@ class Web
     public static function routes(): array {
         return [
             'POST' => [
-                'funcionario/criar' => [EmployeeController::class, 'insert']
+                'funcionario/criar' => [EmployeeController::class, 'insert'],
+                'learn/observer' => [AppController::class, 'observer'],
+                'learn/strategy' => [AppController::class, 'strategy'],
+                'learn/decorator' => [AppController::class, 'decorator'],
+                'learn/decoratorwithstrategy' => [AppController::class, 'decoratorwithstrategy'],
             ],
             'GET' => [
-                'inicio' => [AppController::class, 'inicio']
+                '' => [AppController::class, 'main'],
             ]
         ];
     }

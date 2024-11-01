@@ -32,10 +32,8 @@ class StrategyValidation
         }
     }
 
-    public function getErrors(): array|null
+    public function getErrors(): array
     {
-        return empty($this->errors) 
-            ? null
-            : $this->errors;
+        return $this->errors;
     }
 }
