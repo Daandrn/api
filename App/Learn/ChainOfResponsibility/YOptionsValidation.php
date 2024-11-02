@@ -15,7 +15,7 @@ class YOptionsValidation extends AbstractValidationHandler
         };
 
         if (!in_array($data->y, $validYValues)) {
-            return "Erro: O valor de Y é inválido para o valor de X = {$data->x}.";
+            return "O valor de Y é inválido para o valor de X = {$data->x}.";
         }
         return parent::handle($data);
     }

@@ -8,6 +8,7 @@ class EmailNotifier implements ObserverInterface
 {
     public function update(Order $order): void
     {
-        echo "Enviando email: Pedido atualizado para '{$order->getStatus()}'\n";
+        error_log("Enviando email: Pedido atualizado para '{$order->getStatus()}'\n");
+        error_get_last();
     }
 }

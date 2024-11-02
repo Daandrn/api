@@ -8,7 +8,6 @@ class BoletoPayment implements PaymentStrategy
 {
     public function pay(float $amount): bool
     {
-        // Implementação de pagamento com boleto
         return true;
     }
 }

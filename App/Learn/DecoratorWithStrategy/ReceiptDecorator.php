@@ -8,7 +8,9 @@ class ReceiptDecorator extends PaymentDecorator
 {
     public function pay(float $amount): bool
     {
-        echo "Gerando recibo de pagamento...\n";
+        error_log("Gerando recibo de pagamento...\n");
+        error_get_last();
+        
         return parent::pay($amount);
     }
 }

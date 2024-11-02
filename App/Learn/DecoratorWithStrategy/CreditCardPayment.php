@@ -8,7 +8,6 @@ class CreditCardPayment implements PaymentStrategy
 {
     public function pay(float $amount): bool
     {
-        // Implementação de pagamento com cartão de crédito
         return true;
     }
 }

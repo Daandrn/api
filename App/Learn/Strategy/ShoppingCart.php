@@ -19,7 +19,7 @@ class ShoppingCart
         $this->items[$name] = $price;
     }
 
-    public function calculateTotal(): float
+    protected function calculateTotal(): float
     {
         $total = array_sum($this->items);
         $tax = $this->taxStrategy->calculateTax($total);
@@ -29,5 +29,10 @@ class ShoppingCart
     public function setTaxStrategy(TaxStrategy $taxStrategy): void
     {
         $this->taxStrategy = $taxStrategy;
+    }
+
+    public function valueTotal(): float
+    {
+        return $this->calculateTotal();
     }
 }

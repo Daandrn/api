@@ -17,6 +17,8 @@ class Web
                 'learn/strategy' => [AppController::class, 'strategy'],
                 'learn/decorator' => [AppController::class, 'decorator'],
                 'learn/decoratorwithstrategy' => [AppController::class, 'decoratorwithstrategy'],
+                'learn/chainofresponsability' => [AppController::class, 'chainofresponsability'],
+                'learn/reflection' => [AppController::class, 'reflection'],
             ],
             'GET' => [
                 '' => [AppController::class, 'main'],

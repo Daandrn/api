@@ -8,7 +8,9 @@ class LogDecorator extends PaymentDecorator
 {
     public function pay(float $amount): bool
     {
-        echo "Registrando log do pagamento de: {$amount}\n";
+        error_log("Registrando log do pagamento de: {$amount}\n");
+        error_get_last();
+        
         return parent::pay($amount);
     }
 }

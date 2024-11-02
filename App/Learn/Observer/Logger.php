@@ -8,6 +8,7 @@ class Logger implements ObserverInterface
 {
     public function update(Order $order): void
     {
-        echo "Log: Pedido atualizado para '{$order->getStatus()}'\n";
+        error_log("Log: Pedido atualizado para '{$order->getStatus()}'\n");
+        error_get_last();
     }
 }

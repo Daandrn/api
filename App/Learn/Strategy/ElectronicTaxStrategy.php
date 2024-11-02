@@ -8,7 +8,6 @@ class ElectronicTaxStrategy implements TaxStrategy
 {
     public function calculateTax(float $amount): float
     {
-        // Imposto de 15% para produtos eletrônicos
         return $amount * 0.15;
     }
 }

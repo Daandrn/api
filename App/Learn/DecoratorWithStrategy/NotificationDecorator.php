@@ -8,7 +8,9 @@ class NotificationDecorator extends PaymentDecorator
 {
     public function pay(float $amount): bool
     {
-        echo "Enviando notificação de pagamento...\n";
+        error_log("Enviando notificação de pagamento...\n");
+        error_get_last();
+        
         return parent::pay($amount);
     }
 }

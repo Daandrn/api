@@ -6,7 +6,9 @@ use App\Learn\ChainOfResponsibility\{XRangeValidation, YOptionsValidation};
 use App\Learn\Decorator\{BaseAuthService, SessionAuthDecorator, TwoFactorAuthDecorator};
 use App\Learn\DecoratorWithStrategy\{CreditCardPayment, LogDecorator, NotificationDecorator, ReceiptDecorator};
 use App\Learn\Observer\{EmailNotifier, Order, Logger};
+use App\Learn\Reflection\User;
 use App\Learn\Strategy\{ElectronicTaxStrategy, FoodTaxStrategy, ShoppingCart};
+use ReflectionClass;
 use Vendor\requests\Api;
 use Vendor\requests\Request;
 
@@ -26,6 +28,46 @@ class AppController
         ]);
     }
 
+    public function reflection()
+    {
+        // Cria uma instância da classe ReflectionClass
+        $reflection = new ReflectionClass(User::class);
+
+        $classInfo['class_name'] = $reflection->getName();
+
+        // Obtém os métodos da classe
+        $methods = $reflection->getMethods();
+
+        foreach ($methods as $method) {
+            $classMethods[] = $method->getName();
+        }
+        
+        $classInfo['class_methods'] = $classMethods;
+
+        // Obtém as propriedades da classe
+        $properties = $reflection->getProperties();
+        
+        foreach ($properties as $property) {
+            $classProperties[] = [
+                'property_name' => $property->getName(),
+                'access' => $property->isPublic() ? 'Público' : 'Privado'
+            ];
+        }
+
+        $classInfo['class_properties'] = $classProperties;
+        
+        // Verifica se a classe tem um construtor
+        if ($reflection->hasMethod('__construct')) {
+            $hasConstruct = 'A classe tem um construtor';
+        }
+
+        $classInfo['class_has_construct'] = $hasConstruct;
+        
+        Api::response([
+            $classInfo
+        ]);
+    }
+
     public function observer(): void
     {
         $order = new Order();
@@ -35,7 +77,7 @@ class AppController
         $order->updateStatus("Enviado");
 
         Api::response([
-            //
+            'order_status' => $order->getStatus()
         ]);
     }
 
@@ -45,16 +87,17 @@ class AppController
         $cart->addItem("Smartphone", 600);
         $cart->addItem("Laptop", 1200);
 
-        echo "Total com imposto eletrônico: " . $cart->calculateTotal() . "\n";
+        $valueTotalEletronics = $cart->valueTotal();
 
         $cart->setTaxStrategy(new FoodTaxStrategy());
         $cart->addItem("Apple", 2);
         $cart->addItem("Bread", 3);
 
-        echo "Total com imposto de alimentos: " . $cart->calculateTotal() . "\n";
+        $valueTotalFoods = $cart->valueTotal();
 
         Api::response([
-            //
+            'Total_com_imposto_eletrônico' => $valueTotalEletronics,
+            'Total_com_imposto_alimentos' => $valueTotalFoods
         ]);
     }
 
@@ -71,14 +114,12 @@ class AppController
         $authService = new TwoFactorAuthDecorator($authService);
         $authService = new SessionAuthDecorator($authService);
         
-        if ($authService->authenticate($credentials)) {
-            echo "Autenticação bem-sucedida!";
-        } else {
-            echo "Autenticação falhou!";
-        }
+        $response = $authService->authenticate($credentials) 
+            ? "Autenticação bem-sucedida!"
+            : "Autenticação falhou!";
         
         Api::response([
-            //
+            'response' => $response
         ]);
     }
 
@@ -89,10 +130,12 @@ class AppController
         $payment = new NotificationDecorator($payment);
         $payment = new ReceiptDecorator($payment);
         
-        $payment->pay(100.00);
+        $response = $payment->pay(100.00)
+            ? 'Pagamento realizado!'
+            : 'Pagamento não realizado!';
         
         Api::response([
-            //
+            'response' => $response
         ]);
     }
 
@@ -107,10 +150,8 @@ class AppController
 
         $result = $xValidation->handle($data);
 
-        if ($result) {
-            echo $result;
-        } else {
-            echo "Validações concluídas com sucesso!";
-        }
+        Api::response([
+            'response' => $result ?? "Validações concluídas com sucesso!"
+        ]);
     }
 }
